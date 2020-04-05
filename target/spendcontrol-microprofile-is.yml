@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: spendcontrol-microprofile
+  spec:
+    tags:
+    - from:
+        kind: ImageStreamImage
+        name: spendcontrol-microprofile@sha256:1fe2581d6fea39175439bb2ba89efcf0f09ef72444701c8192efbc938f9a7689
+        namespace: vasanthakumar-in
+      name: latest

@@ -1,0 +1,164 @@
+{
+  "apiVersion" : "apps.openshift.io/v1",
+  "kind" : "DeploymentConfig",
+  "metadata" : {
+    "creationTimestamp" : "2020-04-04T13:53:04Z",
+    "generation" : 15,
+    "labels" : {
+      "app" : "spendcontrol-microprofile",
+      "group" : "com.ibm.spendcontrol",
+      "provider" : "fabric8",
+      "version" : "1.0.0-SNAPSHOT"
+    },
+    "name" : "spendcontrol-microprofile",
+    "namespace" : "vasanthakumar-in",
+    "resourceVersion" : "66836581",
+    "selfLink" : "/apis/apps.openshift.io/v1/namespaces/vasanthakumar-in/deploymentconfigs/spendcontrol-microprofile",
+    "uid" : "9b053db5-767b-11ea-808c-3a4b2e652807"
+  },
+  "spec" : {
+    "replicas" : 1,
+    "revisionHistoryLimit" : 2,
+    "selector" : {
+      "app" : "spendcontrol-microprofile",
+      "group" : "com.ibm.spendcontrol",
+      "provider" : "fabric8"
+    },
+    "strategy" : {
+      "activeDeadlineSeconds" : 21600,
+      "resources" : { },
+      "rollingParams" : {
+        "intervalSeconds" : 1,
+        "maxSurge" : "25%",
+        "maxUnavailable" : "25%",
+        "timeoutSeconds" : 3600,
+        "updatePeriodSeconds" : 1
+      },
+      "type" : "Rolling"
+    },
+    "template" : {
+      "metadata" : {
+        "labels" : {
+          "app" : "spendcontrol-microprofile",
+          "group" : "com.ibm.spendcontrol",
+          "provider" : "fabric8",
+          "version" : "1.0.0-SNAPSHOT"
+        }
+      },
+      "spec" : {
+        "containers" : [ {
+          "env" : [ {
+            "name" : "KUBERNETES_NAMESPACE",
+            "valueFrom" : {
+              "fieldRef" : {
+                "apiVersion" : "v1",
+                "fieldPath" : "metadata.namespace"
+              }
+            }
+          } ],
+          "image" : "spendcontrol-microprofile:latest",
+          "imagePullPolicy" : "IfNotPresent",
+          "livenessProbe" : {
+            "failureThreshold" : 3,
+            "httpGet" : {
+              "path" : "/health",
+              "port" : 8080,
+              "scheme" : "HTTP"
+            },
+            "initialDelaySeconds" : 180,
+            "periodSeconds" : 10,
+            "successThreshold" : 1,
+            "timeoutSeconds" : 1
+          },
+          "name" : "thorntail-v2",
+          "ports" : [ {
+            "containerPort" : 8080,
+            "name" : "http",
+            "protocol" : "TCP"
+          }, {
+            "containerPort" : 9779,
+            "name" : "prometheus",
+            "protocol" : "TCP"
+          }, {
+            "containerPort" : 8778,
+            "name" : "jolokia",
+            "protocol" : "TCP"
+          } ],
+          "readinessProbe" : {
+            "failureThreshold" : 3,
+            "httpGet" : {
+              "path" : "/health",
+              "port" : 8080,
+              "scheme" : "HTTP"
+            },
+            "initialDelaySeconds" : 10,
+            "periodSeconds" : 10,
+            "successThreshold" : 1,
+            "timeoutSeconds" : 1
+          },
+          "resources" : { },
+          "securityContext" : {
+            "privileged" : false
+          },
+          "terminationMessagePath" : "/dev/termination-log",
+          "terminationMessagePolicy" : "File"
+        } ],
+        "dnsPolicy" : "ClusterFirst",
+        "restartPolicy" : "Always",
+        "schedulerName" : "default-scheduler",
+        "securityContext" : { },
+        "terminationGracePeriodSeconds" : 30
+      }
+    },
+    "test" : false,
+    "triggers" : [ {
+      "type" : "ConfigChange"
+    }, {
+      "imageChangeParams" : {
+        "automatic" : true,
+        "containerNames" : [ "thorntail-v2" ],
+        "from" : {
+          "kind" : "ImageStreamTag",
+          "name" : "spendcontrol-microprofile:latest",
+          "namespace" : "vasanthakumar-in"
+        }
+      },
+      "type" : "ImageChange"
+    } ]
+  },
+  "status" : {
+    "availableReplicas" : 1,
+    "conditions" : [ {
+      "lastTransitionTime" : "2020-04-04T13:53:39Z",
+      "lastUpdateTime" : "2020-04-04T13:53:39Z",
+      "message" : "Deployment config has minimum availability.",
+      "status" : "True",
+      "type" : "Available"
+    }, {
+      "lastTransitionTime" : "2020-04-04T17:01:49Z",
+      "lastUpdateTime" : "2020-04-04T17:01:49Z",
+      "message" : "replication controller \"spendcontrol-microprofile-8\" is progressing",
+      "reason" : "ReplicationControllerUpdated",
+      "status" : "True",
+      "type" : "Progressing"
+    } ],
+    "details" : {
+      "causes" : [ {
+        "imageTrigger" : {
+          "from" : {
+            "kind" : "DockerImage",
+            "name" : "172.21.39.26:5000/vasanthakumar-in/spendcontrol-microprofile@sha256:1fe2581d6fea39175439bb2ba89efcf0f09ef72444701c8192efbc938f9a7689"
+          }
+        },
+        "type" : "ImageChange"
+      } ],
+      "message" : "image change"
+    },
+    "latestVersion" : 8,
+    "observedGeneration" : 14,
+    "readyReplicas" : 1,
+    "replicas" : 2,
+    "unavailableReplicas" : 1,
+    "updatedReplicas" : 1
+  }
+}

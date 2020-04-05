@@ -1,0 +1,4 @@
+com\ibm\spendcontrol\microprofile\persistence\SpendDAO.class
+com\ibm\spendcontrol\microprofile\rest\SpendControlService.class
+com\ibm\spendcontrol\microprofile\rest\RestApplication.class
+com\ibm\spendcontrol\microprofile\bean\Spend.class
